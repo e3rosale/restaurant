@@ -32,7 +32,7 @@ Install Prettier
 2.  Refer to the NextJS Lint with Prettier configuration notes [here](https://nextjs.org/docs/pages/building-your-application/configuring/eslint#usage-with-other-tools):
 
     1.  Install the eslint-config-prettier dependency: `npm install --save-dev eslint-config-prettier`
-    2.  Add prettier to the existing ESLint config (.eslintrc.json)
+    2.  Add prettier to the existing ESLint config (`.eslintrc.json`)
 
         ```
         {
@@ -40,16 +40,20 @@ Install Prettier
         }
         ```
 
-    3.  Create a `.prettierrc.json` configuration and add these styling rules:
+    3.  Create a `.prettierrc.json` configuration file in the project root directory and add these styling rules:
 
         ```
         {
-        "trailingComma": "es5",
-        "semi": true,
-        "tabWidth": 2,
-        "printWidth": 100
+          "trailingComma": "es5",
+          "semi": true,
+          "tabWidth": 2,
+          "printWidth": 100
         }
         ```
+
+    4.  Enable format on save in VS Code settings
+    5.  Set the default code formatter to Prettier in VS Code settings
+    6.  Restart VS Code
 
 ## Learn More
 
