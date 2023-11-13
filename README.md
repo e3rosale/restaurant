@@ -24,6 +24,33 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Setting Up Developer Environment
+
+Install Prettier
+
+1.  If using VS Code, install the Prettier extension
+2.  Refer to the NextJS Lint with Prettier configuration notes [here](https://nextjs.org/docs/pages/building-your-application/configuring/eslint#usage-with-other-tools):
+
+    1.  Install the eslint-config-prettier dependency: `npm install --save-dev eslint-config-prettier`
+    2.  Add prettier to the existing ESLint config (.eslintrc.json)
+
+        ```
+        {
+          "extends": ["next/core-web-vitals", "next", "prettier"]
+        }
+        ```
+
+    3.  Create a `.prettierrc.json` configuration and add these styling rules:
+
+        ```
+        {
+        "trailingComma": "es5",
+        "semi": true,
+        "tabWidth": 2,
+        "printWidth": 100
+        }
+        ```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
