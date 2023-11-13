@@ -51,9 +51,21 @@ Install Prettier
         }
         ```
 
-    4.  Enable format on save in VS Code settings
-    5.  Set the default code formatter to Prettier in VS Code settings
-    6.  Restart VS Code
+    4.  Configure scripts in package.json:
+
+        ```
+        "scripts": {
+          ...
+          "format": "prettier --check --ignore-path .gitignore .",
+          "format:fix": "prettier --write --ignore-path .gitignore ."
+        }
+        ```
+
+    5.  Enable format on save in VS Code settings
+    6.  Set the default code formatter to Prettier in VS Code settings
+    7.  Restart VS Code
+
+Refer to [this](https://medium.com/@cameronadams1225/setting-up-a-next-js-13-project-with-eslint-and-prettier-735c3ccfd26c) guide for more useful details on how to setup prettier with TailwindCSS in a NextJS project.
 
 ## Learn More
 
