@@ -5,13 +5,25 @@
   align-items: center;
 }
 
+.image {
+  width: 100%;
+  height: auto;
+}
+
 .title {
   font-size: 24px;
   color: #444;
 }
 
 .desc {
+  font-size: 24px;
+  color: #444;
+  width: 70%;
 }
 
 .wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
