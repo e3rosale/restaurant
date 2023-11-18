@@ -9,7 +9,7 @@
 
 .imageContainer {
   width: 100%;
-  position: unset !important;
+  position: relative;
 }
 
 .image {

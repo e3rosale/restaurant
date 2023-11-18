@@ -20,17 +20,17 @@ const Featured = () => {
   return (
     <div className={styles.container}>
       <div className={styles.arrowContainer} style={{ left: 0 }} onClick={() => handleArrowClick("l")}>
-        <Image src="/img/arrowl.png" alt="" layout="fill" objectFit="contain" />
+        <Image src="/img/arrowl.png" alt="" fill={true} style={{ objectFit: "contain" }} />
       </div>
       <div className={styles.wrapper} style={{ width: images.length * 100 + "vw", transform: `translateX(${-100 * index}vw)` }}>
         {images.map((image, index) => (
           <div className={styles.imgContainer} key={index}>
-            <Image src={image} alt="" layout="fill" objectFit="contain" />
+            <Image src={image} alt="" fill={true} style={{ objectFit: "contain" }} />
           </div>
         ))}
       </div>
       <div className={styles.arrowContainer} style={{ right: 0 }} onClick={() => handleArrowClick("r")}>
-        <Image src="/img/arrowr.png" alt="" layout="fill" objectFit="contain" />
+        <Image src="/img/arrowr.png" alt="" fill={true} style={{ objectFit: "contain" }} />
       </div>
     </div>
   );
