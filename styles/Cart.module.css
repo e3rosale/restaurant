@@ -55,3 +55,60 @@
   cursor: pointer;
   margin-top: 20px;
 }
+
+@media screen and (max-width: 480px) {
+  .container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .table {
+    border-spacing: 0px;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .tr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+
+  .extras,
+  .price,
+  .quantity {
+    font-size: 22px;
+  }
+
+  .price::before {
+    content: "Price: ";
+    font-weight: 500;
+  }
+
+  .quantity::before {
+    content: "Quantity: ";
+    font-weight: 500;
+  }
+
+  .total::before {
+    content: "Total: ";
+    font-weight: 500;
+  }
+
+  .imgContainer {
+    width: 35vw;
+    height: 35vw;
+  }
+
+  .name,
+  .total {
+    font-size: 24px;
+  }
+
+  .wrapper {
+    width: 100%;
+  }
+}

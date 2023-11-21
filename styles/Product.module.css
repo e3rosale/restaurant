@@ -22,6 +22,13 @@
   position: relative;
 }
 
+.img {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+}
+
 .price {
   color: #d1411e;
   font-size: 24px;
@@ -31,7 +38,6 @@
 
 .sizes {
   width: 40%;
-  /* background-color: gold; */
   display: flex;
   justify-content: space-between;
 }
@@ -39,7 +45,6 @@
 .size {
   width: 30px;
   height: 30px;
-  /* background-color: blue; */
   cursor: pointer;
   position: relative;
 }
@@ -96,4 +101,46 @@
   border: none;
   font-weight: 500;
   cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    margin-top: 20px;
+    text-align: center;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .imgContainer {
+    height: auto;
+  }
+
+  .title {
+    margin: 5px;
+  }
+
+  .sizes {
+    width: 100%;
+    padding: 0px 20px;
+  }
+
+  .ingredients {
+    flex-direction: column;
+  }
+
+  .option {
+    margin: 10px;
+    font-size: 18px;
+  }
+
+  .checkbox {
+    width: 25px;
+    height: 25px;
+  }
+
+  .quantity,
+  .button {
+    height: 50px;
+    padding: 10px 20px;
+  }
 }
