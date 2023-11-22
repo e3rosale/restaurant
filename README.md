@@ -67,6 +67,11 @@ Install Prettier
 
 Refer to [this](https://medium.com/@cameronadams1225/setting-up-a-next-js-13-project-with-eslint-and-prettier-735c3ccfd26c) guide for more useful details on how to setup prettier with TailwindCSS in a NextJS project.
 
+## Important Resources
+
+- [YouTube](https://www.youtube.com/watch?v=Z-hACIsjv4E&t=123s)
+- [GitHub](https://github.com/safak/youtube/tree/next-food-ordering-app)
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
