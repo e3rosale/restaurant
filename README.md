@@ -71,6 +71,7 @@ Refer to [this](https://medium.com/@cameronadams1225/setting-up-a-next-js-13-pro
 
 - [YouTube](https://www.youtube.com/watch?v=Z-hACIsjv4E&t=123s)
 - [GitHub](https://github.com/safak/youtube/tree/next-food-ordering-app)
+- [with-mongodb-mongoose](https://github.com/vercel/next.js/tree/canary/examples/with-mongodb-mongoose)
 
 ## Learn More
 
