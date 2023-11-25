@@ -6,20 +6,30 @@ export default async function handler(req, res) {
 
   try {
     dbConnect();
-  } catch (err) {
-    res.status(500).json({ err: err, msg: "Failed to connect to database" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error });
   }
 
   if (method === "GET") {
-    res.status(200).json({ hello: "world", success: true });
+    try {
+      const products = await Product.find({});
+
+      if (products.length === 0) {
+        res.status(404).json({ success: false, message: "Pizza products data is empty." });
+      }
+
+      res.status(200).json({ success: true, data: products });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error });
+    }
   }
 
   if (method === "POST") {
     try {
       const product = await Product.create(req.body);
-      res.status(201).json(product);
-    } catch (err) {
-      res.status(500).json(err);
+      res.status(201).json({ success: true, data: product });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error });
     }
   }
 }
