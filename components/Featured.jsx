@@ -4,7 +4,6 @@ import { useState } from "react";
 
 const Featured = () => {
   const [index, setIndex] = useState(0);
-  console.log(index);
   const images = ["/img/featured.png", "/img/featured2.png", "/img/featured3.png"];
 
   const handleArrowClick = (direction) => {
