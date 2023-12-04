@@ -1,5 +1,6 @@
 import Featured from "@/components/Featured";
 import PizzaList from "@/components/PizzaList";
+import { getPizzaList } from "@/util/pizza";
 import Head from "next/head";
 
 export default function Home({ pizzaList }) {
@@ -16,10 +17,8 @@ export default function Home({ pizzaList }) {
   );
 }
 
-export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:3000/api/products/");
-  const { data } = await res.json();
-  const pizzaList = data ?? [];
+export const getStaticProps = async () => {
+  const pizzaList = await getPizzaList();
 
   return { props: { pizzaList } };
 };

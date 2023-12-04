@@ -1,16 +1,22 @@
 import styles from "@/styles/Product.module.css";
+import { getPizzaData, getPizzaListIds } from "@/util/pizza";
 import Image from "next/image";
 import { useState } from "react";
 
-const Product = () => {
+const sumPriceOfCheckedExtraOptions = (accumulator, currentExtraOption) => {
+  if (currentExtraOption.checked) {
+    return accumulator + currentExtraOption.price;
+  }
+
+  return accumulator + 0;
+};
+
+const Product = ({ pizza }) => {
   const [size, setSize] = useState(0);
-  const pizza = {
-    id: 1,
-    img: "/img/pizza.png",
-    name: "CAMPAGNOLA",
-    price: [19.9, 23.9, 27.9],
-    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut blandit arcu in pretium molestie. Interfum et malesuada fames acme. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  };
+
+  const addCheckedPropertyToExtraOptions = () => pizza.extraOptions.map((extraOption) => ({ ...extraOption, checked: false }));
+  const [extraOptions, setExtraOptions] = useState(() => addCheckedPropertyToExtraOptions());
+  const extraOptionsCost = extraOptions.reduce(sumPriceOfCheckedExtraOptions, 0);
 
   return (
     <div className={styles.container}>
@@ -21,7 +27,7 @@ const Product = () => {
       </div>
       <div className={styles.right}>
         <h1 className={styles.title}>{pizza.name}</h1>
-        <span className={styles.price}>${pizza.price[size]}</span>
+        <span className={styles.price}>${pizza.price[size] + extraOptionsCost}</span>
         <p className={styles.desc}>{pizza.desc}</p>
         <h3 className={styles.choose}>Choose the size</h3>
         <div className={styles.sizes}>
@@ -38,25 +44,31 @@ const Product = () => {
             <span className={styles.number}>Large</span>
           </div>
         </div>
-        <h3 className={styles.choose}>Choose additional ingredients</h3>
-        <div className={styles.ingredients}>
-          <div className={styles.option}>
-            <input type="checkbox" id="double" name="double" className={styles.checkbox} />
-            <label htmlFor="double">Double Ingredients</label>
-          </div>
-          <div className={styles.option}>
-            <input type="checkbox" id="extraCheese" name="extraCheese" className={styles.checkbox} />
-            <label htmlFor="extraCheese">Extra Cheese</label>
-          </div>
-          <div className={styles.option}>
-            <input type="checkbox" id="spicy" name="spicy" className={styles.checkbox} />
-            <label htmlFor="spicy">Spicy Sauce</label>
-          </div>
-          <div className={styles.option}>
-            <input type="checkbox" id="garlic" name="garlic" className={styles.checkbox} />
-            <label htmlFor="garlic">Garlic Sauce</label>
-          </div>
-        </div>
+        {extraOptions.length > 0 && (
+          <>
+            <h3 className={styles.choose}>Choose additional ingredients</h3>
+            <div className={styles.ingredients}>
+              {extraOptions.map((extraOption, index) => (
+                <div className={styles.option} key={extraOption.text}>
+                  <input
+                    type="checkbox"
+                    className={styles.checkbox}
+                    id={extraOption.text}
+                    name={extraOption.text}
+                    onChange={(e) => {
+                      const currentExtraOptions = [...extraOptions];
+                      const currentExtraOption = { ...currentExtraOptions[index], checked: e.target.checked };
+                      currentExtraOptions[index] = currentExtraOption;
+                      setExtraOptions(currentExtraOptions);
+                    }}
+                    checked={extraOption.checked}
+                  />
+                  <label htmlFor={extraOption.text}>{extraOption.text}</label>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
         <div className={styles.add}>
           <input type="number" defaultValue={1} className={styles.quantity} />
           <button className={styles.button}>Add to Cart</button>
@@ -64,6 +76,25 @@ const Product = () => {
       </div>
     </div>
   );
+};
+
+export const getStaticPaths = async () => {
+  const paths = await getPizzaListIds();
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async ({ params }) => {
+  const pizza = await getPizzaData(params.id);
+
+  return {
+    props: {
+      pizza,
+    },
+  };
 };
 
 export default Product;
