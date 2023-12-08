@@ -7,12 +7,12 @@ const PizzaCard = ({ pizza }) => {
     <div className={styles.container}>
       <div className={styles.imageContainer}>
         <Link href={`/product/${pizza._id}`} passHref>
-          <Image src={pizza.img} alt="" fill={true} className={styles.image} />
+          <Image src={pizza.image} alt="" fill={true} className={styles.image} />
         </Link>
       </div>
       <h1 className={styles.title}>{pizza.name}</h1>
-      <span className={styles.price}>${pizza.price[0]}</span>
-      <p className={styles.desc}>{pizza.desc}</p>
+      <span className={styles.price}>${pizza.sizes[0]?.price}</span>
+      <p className={styles.desc}>{pizza.description}</p>
     </div>
   );
 };

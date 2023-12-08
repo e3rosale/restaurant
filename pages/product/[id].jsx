@@ -1,77 +1,120 @@
+import { useCartState } from "@/context/CartContext/CartContext";
+import { cartActionType } from "@/context/CartContext/CartReducer";
 import styles from "@/styles/Product.module.css";
 import { getPizzaData, getPizzaListIds } from "@/util/pizza";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-const sumPriceOfCheckedExtraOptions = (accumulator, currentExtraOption) => {
-  if (currentExtraOption.checked) {
-    return accumulator + currentExtraOption.price;
+const sumPriceOfCheckedExtras = (accumulator, extra) => {
+  if (extra.selected) {
+    return accumulator + extra.price;
   }
 
   return accumulator + 0;
 };
 
 const Product = ({ pizza }) => {
-  const [size, setSize] = useState(0);
+  const [sizes, setSizes] = useState(pizza.sizes);
+  const sizeCost = useMemo(() => {
+    const sizeSelected = sizes.find((size) => size.selected === true);
 
-  const addCheckedPropertyToExtraOptions = () => pizza.extraOptions.map((extraOption) => ({ ...extraOption, checked: false }));
-  const [extraOptions, setExtraOptions] = useState(() => addCheckedPropertyToExtraOptions());
-  const extraOptionsCost = extraOptions.reduce(sumPriceOfCheckedExtraOptions, 0);
+    return sizeSelected.price;
+  }, [sizes]);
+
+  const [, cartStateDispatch] = useCartState();
+
+  const [extras, setExtras] = useState(pizza.extras);
+  const extrasCost = useMemo(() => {
+    return extras.reduce(sumPriceOfCheckedExtras, 0);
+  }, [extras]);
+
+  const [quantity, setQuantity] = useState(1);
+
+  const onSizeChange = (event) => {
+    const newSize = event.target.value;
+    const currentSizes = [...sizes];
+
+    for (let i = 0; i < currentSizes.length; i++) {
+      const currentSize = currentSizes[i];
+
+      if (currentSize.name === newSize) {
+        currentSize.selected = true;
+      } else {
+        currentSize.selected = false;
+      }
+    }
+
+    setSizes(currentSizes);
+  };
+
+  const onExtraChange = (event, index) => {
+    const currentExtras = [...extras];
+    currentExtras[index].selected = event.target.checked;
+
+    setExtras(currentExtras);
+  };
+
+  // Need to do validation here. Only allow non-negative integers greater than 0
+  const onQuantityChange = (event) => {
+    setQuantity(Number(event.target.value));
+  };
+
+  const onAddToCartButtonClick = () => {
+    const pizzaToAdd = { ...pizza, sizes, extras };
+    const productToAdd = {
+      product: pizzaToAdd,
+      price: sizeCost + extrasCost,
+      quantity: quantity,
+    };
+
+    cartStateDispatch({ type: cartActionType.ADD_PRODUCT, payload: productToAdd });
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.left}>
         <div className={styles.imgContainer}>
-          <Image src={pizza.img} fill={true} alt="" className={styles.img} />
+          <Image src={pizza.image} fill={true} alt="" className={styles.img} />
         </div>
       </div>
       <div className={styles.right}>
         <h1 className={styles.title}>{pizza.name}</h1>
-        <span className={styles.price}>${pizza.price[size] + extraOptionsCost}</span>
-        <p className={styles.desc}>{pizza.desc}</p>
+        <span className={styles.price}>${sizeCost + extrasCost}</span>
+        <p className={styles.desc}>{pizza.description}</p>
         <h3 className={styles.choose}>Choose the size</h3>
         <div className={styles.sizes}>
-          <div className={styles.size} onClick={() => setSize(0)}>
-            <Image src="/img/size.png" fill={true} alt="Pizza size logo small" />
-            <span className={styles.number}>Small</span>
-          </div>
-          <div className={styles.size} onClick={() => setSize(1)}>
-            <Image src="/img/size.png" fill={true} alt="Pizza size logo medium" />
-            <span className={styles.number}>Medium</span>
-          </div>
-          <div className={styles.size} onClick={() => setSize(2)}>
-            <Image src="/img/size.png" fill={true} alt="Pizza size logo large" />
-            <span className={styles.number}>Large</span>
-          </div>
+          {sizes.map((size) => (
+            <div className={styles.size} key={size.name}>
+              <input type="radio" value={size.name} name="size" id={size.name} checked={size.selected} onChange={onSizeChange} />
+              <label htmlFor={size.name}>{size.name}</label>
+            </div>
+          ))}
         </div>
-        {extraOptions.length > 0 && (
+        {extras.length > 0 && (
           <>
             <h3 className={styles.choose}>Choose additional ingredients</h3>
             <div className={styles.ingredients}>
-              {extraOptions.map((extraOption, index) => (
-                <div className={styles.option} key={extraOption.text}>
+              {extras.map((extra, index) => (
+                <div className={styles.option} key={extra.name}>
                   <input
                     type="checkbox"
                     className={styles.checkbox}
-                    id={extraOption.text}
-                    name={extraOption.text}
-                    onChange={(e) => {
-                      const currentExtraOptions = [...extraOptions];
-                      const currentExtraOption = { ...currentExtraOptions[index], checked: e.target.checked };
-                      currentExtraOptions[index] = currentExtraOption;
-                      setExtraOptions(currentExtraOptions);
-                    }}
-                    checked={extraOption.checked}
+                    id={extra.name}
+                    name={extra.name}
+                    onChange={(e) => onExtraChange(e, index)}
+                    checked={extra.selected}
                   />
-                  <label htmlFor={extraOption.text}>{extraOption.text}</label>
+                  <label htmlFor={extra.name}>{extra.name}</label>
                 </div>
               ))}
             </div>
           </>
         )}
         <div className={styles.add}>
-          <input type="number" defaultValue={1} className={styles.quantity} />
-          <button className={styles.button}>Add to Cart</button>
+          <input type="number" className={styles.quantity} value={quantity} onChange={onQuantityChange} min={1} />
+          <button className={styles.button} onClick={onAddToCartButtonClick}>
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
@@ -88,7 +131,24 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
+  // If pizza is null, we should check in the page, and render an error component.
   const pizza = await getPizzaData(params.id);
+
+  if (pizza !== null) {
+    // For each pizza size option, add a selected property. Set the first one to true, all others to false.
+    for (let i = 0; i < pizza.sizes.length; i++) {
+      if (i === 0) {
+        pizza.sizes[i].selected = true;
+      } else {
+        pizza.sizes[i].selected = false;
+      }
+    }
+
+    // For each extra option item, add a checked property. Set this initial value to false.
+    for (let i = 0; i < pizza.extras.length; i++) {
+      pizza.extras[i].selected = false;
+    }
+  }
 
   return {
     props: {
