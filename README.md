@@ -75,6 +75,7 @@ Refer to [this](https://medium.com/@cameronadams1225/setting-up-a-next-js-13-pro
 - [localStorage](https://articles.wesionary.team/using-localstorage-with-next-js-a-beginners-guide-7fc4f8bfd9dc)
 - [localStroage-secure](https://articles.wesionary.team/securing-sensitive-data-in-a-next-js-application-d7d5cce67f23)
 - [ContextAPI-useReducer-Nextjs](https://medium.com/geekculture/how-to-use-context-usereducer-and-localstorage-in-next-js-cc7bc925d3f2)
+- [Resource-naming-conventions](https://restfulapi.net/resource-naming/)
 
 ## Learn More
 
