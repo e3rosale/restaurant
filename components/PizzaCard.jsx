@@ -11,7 +11,7 @@ const PizzaCard = ({ pizza }) => {
         </Link>
       </div>
       <h1 className={styles.title}>{pizza.name}</h1>
-      <span className={styles.price}>${pizza.sizes[0]?.price}</span>
+      <span className={styles.price}>${pizza.sizes[0].price / 100}</span>
       <p className={styles.desc}>{pizza.description}</p>
     </div>
   );

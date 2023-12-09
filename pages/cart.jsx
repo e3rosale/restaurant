@@ -14,7 +14,7 @@ const ShowProductExtras = ({ extras }) => {
 
 const Cart = () => {
   const [cartState, cartStateDispatch] = useCartState();
-  console.log("[Cart] cartState: ", cartState);
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -44,13 +44,13 @@ const Cart = () => {
                   <ShowProductExtras extras={product.extras} />
                 </td>
                 <td>
-                  <span className={styles.price}>${price}</span>
+                  <span className={styles.price}>${price / 100}</span>
                 </td>
                 <td>
                   <span className={styles.quantity}>{quantity}</span>
                 </td>
                 <td>
-                  <span className={styles.total}>${price * quantity}</span>
+                  <span className={styles.total}>${(price * quantity) / 100}</span>
                 </td>
               </tr>
             ))}
@@ -62,13 +62,13 @@ const Cart = () => {
           <h2 className={styles.title}>CART TOTAL</h2>
           <div className={styles.totalText}>
             <b className={styles.totalTextTitle}>Subtotal:</b>
-            {cartState.total}
+            {cartState.total / 100}
           </div>
           <div className={styles.totalText}>
             <b className={styles.totalTextTitle}>Discount:</b>$0.00
           </div>
           <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Total:</b>${cartState.total}
+            <b className={styles.totalTextTitle}>Total:</b>${cartState.total / 100}
           </div>
           <button className={styles.button}>CHECKOUT NOW!</button>
         </div>
