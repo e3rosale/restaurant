@@ -1,7 +1,8 @@
 import styles from "@/styles/Order.module.css";
+import { getOrder } from "@/util/order";
 import Image from "next/image";
 
-const Order = () => {
+const Order = ({ order }) => {
   const status = 0;
 
   const statusClass = (index) => {
@@ -91,6 +92,20 @@ const Order = () => {
       </div>
     </div>
   );
+};
+
+export const getServerSideProps = async ({ params }) => {
+  const order = await getOrder(params.id);
+
+  if (order === null) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: { order },
+  };
 };
 
 export default Order;
