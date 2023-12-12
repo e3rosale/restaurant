@@ -6,19 +6,14 @@ export const getPizzaList = async () => {
   return data ?? [];
 };
 
+// TODO: What happens if the api server is down? What will happen
+// in the fetch call? In other words, what happens when fetch times out
 // returns an array of Pizza ids or empty array
 export const getPizzaListIds = async () => {
   const res = await fetch("http://localhost:3000/api/products/");
   const { data } = await res.json();
-  const pizzaList = data ?? [];
 
-  return pizzaList.map((pizza) => {
-    return {
-      params: {
-        id: pizza._id,
-      },
-    };
-  });
+  return data ?? null;
 };
 
 // returns a Pizza object or null

@@ -122,7 +122,20 @@ const Product = ({ pizza }) => {
 };
 
 export const getStaticPaths = async () => {
-  const paths = await getPizzaListIds();
+  const pizzaListIds = await getPizzaListIds();
+  let paths;
+
+  if (pizzaListIds === null) {
+    paths = [];
+  } else {
+    paths = pizzaListIds.map((pizza) => {
+      return {
+        params: {
+          id: pizza._id,
+        },
+      };
+    });
+  }
 
   return {
     paths,
